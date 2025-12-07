@@ -1,0 +1,41 @@
+{
+  "category": "Card Delivery",
+  "description": "Information about card delivery, tracking, and address updates",
+  "faqs": [
+    {
+      "question": "How long does it take to receive my credit card?",
+      "answer": "Once your application is approved, your credit card is typically dispatched within 2-3 business days. Standard delivery takes 5-7 business days to major cities and 7-10 business days to other locations. You'll receive an SMS with tracking details once the card is dispatched."
+    },
+    {
+      "question": "How can I track my card delivery?",
+      "answer": "You can track your card delivery by: 1) Using the tracking number sent via SMS, 2) Logging into our app and checking the 'Card Delivery Status' section, 3) Calling customer service, or 4) Visiting our website's tracking page. You'll receive real-time updates on the delivery status."
+    },
+    {
+      "question": "Can I update my delivery address?",
+      "answer": "Yes, you can update your delivery address before the card is dispatched. Contact our customer service at 1800-XXX-XXXX or update it through the app/website. Once dispatched, address changes may not be possible, and you may need to request a replacement card."
+    },
+    {
+      "question": "What if I don't receive my card?",
+      "answer": "If you don't receive your card within 10 business days of dispatch, please contact our customer service immediately. We'll investigate the delivery status and arrange for a replacement card if needed. For security, we may need to verify your identity before issuing a replacement."
+    },
+    {
+      "question": "Can someone else receive my card on my behalf?",
+      "answer": "Yes, someone else can receive your card on your behalf if they provide valid identity proof and an authorization letter from you. However, for security reasons, we recommend being present during delivery. The delivery agent will verify the recipient's identity."
+    }
+  ],
+  "topics": [
+    {
+      "name": "Delivery Timeline",
+      "description": "Card delivery typically takes 5-7 business days to major cities and 7-10 business days to other locations after dispatch. You'll receive tracking information via SMS and email once the card is shipped."
+    },
+    {
+      "name": "Tracking",
+      "description": "Track your card delivery using the tracking number provided in SMS, through our mobile app, website, or by calling customer service. You'll receive updates at each stage: dispatched, in transit, out for delivery, and delivered."
+    },
+    {
+      "name": "Address Update",
+      "description": "You can update your delivery address before dispatch by contacting customer service or through the app. After dispatch, address changes may require a replacement card for security reasons."
+    }
+  ]
+}
+

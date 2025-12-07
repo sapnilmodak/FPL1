@@ -1,0 +1,41 @@
+{
+  "category": "Repayments",
+  "description": "Information about payment methods, due dates, and auto-debit setup",
+  "faqs": [
+    {
+      "question": "What are the payment methods for credit card bills?",
+      "answer": "You can pay your credit card bill through: 1) Net banking from any bank, 2) UPI (Google Pay, PhonePe, Paytm, etc.), 3) Auto-debit from your bank account, 4) NEFT/RTGS, 5) Cheque or demand draft, 6) Cash at bank branches, or 7) Mobile wallets. Most online methods reflect within 2-4 hours."
+    },
+    {
+      "question": "When is my payment due date?",
+      "answer": "Your payment due date is typically 20-25 days after your statement date. For example, if your statement is generated on the 1st of each month, your due date would be around the 20th-25th of the same month. You can check your exact due date in the app, on your statement, or by asking me."
+    },
+    {
+      "question": "How can I set up auto-debit for my credit card?",
+      "answer": "You can set up auto-debit by: 1) Logging into our app and going to 'Auto-debit' settings, 2) Visiting our website and accessing payment settings, 3) Filling the auto-debit form and submitting it, or 4) Calling customer service. You'll need to provide your bank account details and choose to pay minimum due or full amount."
+    },
+    {
+      "question": "What is the minimum due amount?",
+      "answer": "The minimum due amount is typically 5% of your total outstanding balance (subject to a minimum of ₹100-₹500 depending on your card). Paying only the minimum due keeps your account active but interest is charged on the remaining balance. It's recommended to pay the full amount to avoid interest."
+    },
+    {
+      "question": "How long does it take for payment to reflect?",
+      "answer": "Payment reflection time varies: 1) UPI and Net Banking: 2-4 hours, 2) Auto-debit: Same day or next business day, 3) NEFT: 1-2 business days, 4) Cheque: 3-5 business days. You'll receive an SMS confirmation once payment is processed."
+    }
+  ],
+  "topics": [
+    {
+      "name": "Payment Methods",
+      "description": "Pay your credit card bill via net banking, UPI, auto-debit, NEFT/RTGS, cheque, or cash at branches. Online payments typically reflect within 2-4 hours. Choose the method most convenient for you."
+    },
+    {
+      "name": "Due Date",
+      "description": "Your payment due date is 20-25 days after your statement date. Pay at least the minimum due amount by this date to avoid late fees and maintain a good credit score. Check your due date in the app or statement."
+    },
+    {
+      "name": "Auto-debit Setup",
+      "description": "Set up auto-debit to automatically pay your credit card bill from your bank account. Choose to pay minimum due or full amount. Set it up through the app, website, or customer service to never miss a payment."
+    }
+  ]
+}
+

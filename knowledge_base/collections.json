@@ -1,0 +1,41 @@
+{
+  "category": "Collections",
+  "description": "Information about overdue amounts, minimum payments, and resolving outstanding dues",
+  "faqs": [
+    {
+      "question": "What is an overdue amount?",
+      "answer": "An overdue amount is the unpaid balance on your credit card that remains after the payment due date has passed. This includes the principal amount, interest, and any late fees. Overdue amounts can negatively impact your credit score, so it's important to clear them as soon as possible."
+    },
+    {
+      "question": "How can I check my overdue amount?",
+      "answer": "You can check your overdue amount by: 1) Logging into our mobile app and checking the 'Account Summary', 2) Viewing your latest statement, 3) Sending an SMS 'OVERDUE' to our registered number, 4) Calling customer service, or 5) Asking me directly. The amount includes principal, interest, and late fees."
+    },
+    {
+      "question": "What happens if I don't pay the overdue amount?",
+      "answer": "If you don't pay the overdue amount: 1) Additional late fees and interest charges will be applied, 2) Your credit score will be negatively impacted, 3) Your card may be blocked or restricted, 4) You may receive collection calls, and 5) Legal action may be initiated in extreme cases. It's best to contact us to discuss payment options."
+    },
+    {
+      "question": "Can I negotiate a payment plan for overdue amount?",
+      "answer": "Yes, we understand financial difficulties. You can contact our collections team or customer service to discuss flexible payment plans. We may offer: 1) Extended payment timelines, 2) Reduced interest rates in some cases, 3) Structured payment plans, or 4) Settlement options. Contact us as soon as possible to discuss your situation."
+    },
+    {
+      "question": "What is the minimum payment I need to make?",
+      "answer": "The minimum payment is typically 5% of your total outstanding balance (minimum ₹100-₹500 depending on your card type). However, if you have overdue amounts, you should pay at least the overdue amount plus the current minimum due to bring your account back to good standing."
+    }
+  ],
+  "topics": [
+    {
+      "name": "Overdue Amount",
+      "description": "Overdue amount is the unpaid balance after the due date, including principal, interest, and late fees. Clear it as soon as possible to avoid additional charges and credit score impact. Check your overdue amount through the app, statement, or customer service."
+    },
+    {
+      "name": "Minimum Payment",
+      "description": "Minimum payment is typically 5% of outstanding balance (minimum ₹100-₹500). For overdue accounts, pay overdue amount plus current minimum due. Paying only minimum keeps account active but interest continues on remaining balance."
+    },
+    {
+      "name": "Resolve Outstanding Dues",
+      "description": "To resolve outstanding dues: 1) Pay the full overdue amount immediately, 2) Contact customer service for payment plans if needed, 3) Set up auto-debit to avoid future issues, 4) Consider paying more than minimum to reduce interest. We're here to help you get back on track."
+    }
+  ]
+}
+

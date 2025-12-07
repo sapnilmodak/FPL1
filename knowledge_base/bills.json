@@ -1,0 +1,41 @@
+{
+  "category": "Bills & Statement",
+  "description": "Information about billing cycles, statements, late fees, and downloads",
+  "faqs": [
+    {
+      "question": "What is my billing cycle?",
+      "answer": "Your billing cycle is typically 30 days, starting from the date your card was activated. Your statement is generated on the same date each month (statement date), and the payment is due 20-25 days after the statement date (due date). You can check your exact billing cycle in the app or on your statement."
+    },
+    {
+      "question": "What is a late fee?",
+      "answer": "A late fee is charged when you don't pay your minimum due amount by the due date. The late fee is typically ₹500-₹1,000 depending on your card type and outstanding amount. To avoid late fees, ensure you pay at least the minimum due amount before the due date."
+    },
+    {
+      "question": "How can I download my statement?",
+      "answer": "You can download your statement by: 1) Logging into our mobile app and going to 'Statements', 2) Visiting our website and accessing the 'Statements' section, 3) Requesting via email by calling customer service, or 4) Using the 'DOWNLOAD_STATEMENT' command in chat. Statements are available for the last 24 months."
+    },
+    {
+      "question": "Can I get an e-statement instead of a physical statement?",
+      "answer": "Yes, you can opt for e-statements to receive your statements via email. This is eco-friendly and faster. You can enable e-statements through the app, website, or by calling customer service. You'll still have access to download statements anytime."
+    },
+    {
+      "question": "What information is included in my statement?",
+      "answer": "Your statement includes: 1) All transactions during the billing period, 2) Total amount due, 3) Minimum due amount, 4) Due date, 5) Available credit limit, 6) Rewards points summary, 7) Interest charges (if any), and 8) Payment instructions. Review your statement carefully each month."
+    }
+  ],
+  "topics": [
+    {
+      "name": "Billing Cycle",
+      "description": "Your billing cycle is typically 30 days. The statement is generated monthly, and payment is due 20-25 days after the statement date. You can view your billing cycle details in the app or on your statement."
+    },
+    {
+      "name": "Late Fee",
+      "description": "Late fees (₹500-₹1,000) are charged when minimum due is not paid by the due date. Pay at least the minimum due amount on time to avoid late fees and maintain a good credit score."
+    },
+    {
+      "name": "Download Statements",
+      "description": "Download statements from the app, website, or request via customer service. E-statements are available via email. Statements are retained for 24 months and can be downloaded anytime."
+    }
+  ]
+}
+

@@ -1,0 +1,41 @@
+{
+  "category": "Transaction & EMI",
+  "description": "Information about transactions, failed payments, limits, and EMI conversion",
+  "faqs": [
+    {
+      "question": "Why did my transaction fail?",
+      "answer": "Transactions can fail due to: 1) Insufficient available credit limit, 2) Card being blocked or expired, 3) Incorrect PIN or CVV, 4) Merchant restrictions, 5) Suspicious activity detected, or 6) Network issues. Check your available credit and card status, then try again. If the issue persists, contact customer service."
+    },
+    {
+      "question": "How can I check my available credit limit?",
+      "answer": "You can check your available credit limit by: 1) Logging into our mobile app or website, 2) Sending an SMS 'BAL' to our registered number, 3) Calling customer service, or 4) Checking your monthly statement. Available credit = Credit Limit - Current Outstanding Balance."
+    },
+    {
+      "question": "How can I convert a transaction to EMI?",
+      "answer": "You can convert eligible transactions to EMI by: 1) Logging into our app and selecting the transaction, 2) Choosing 'Convert to EMI' option, 3) Selecting the tenure (3, 6, 9, 12, 18, or 24 months), and 4) Confirming the conversion. Transactions above ₹2,500 are typically eligible for EMI conversion."
+    },
+    {
+      "question": "What is the minimum transaction amount for EMI?",
+      "answer": "The minimum transaction amount for EMI conversion is typically ₹2,500. However, this may vary based on your card type and the merchant. You can convert transactions within 30 days of the purchase date. Check the app for specific eligibility criteria."
+    },
+    {
+      "question": "Can I reverse an EMI conversion?",
+      "answer": "EMI conversion can usually be reversed within 24-48 hours of conversion, subject to terms and conditions. After this period, you'll need to pay the remaining EMI installments. Contact customer service for assistance with EMI reversal requests."
+    }
+  ],
+  "topics": [
+    {
+      "name": "Failed Transactions",
+      "description": "Transactions may fail due to insufficient credit, card issues, incorrect details, or security checks. Check your available credit, card status, and try again. Contact customer service if the problem persists."
+    },
+    {
+      "name": "Credit Limit",
+      "description": "Your available credit limit is the difference between your total credit limit and current outstanding balance. You can check it anytime through the app, SMS, or customer service."
+    },
+    {
+      "name": "EMI Conversion",
+      "description": "Convert eligible transactions (typically ₹2,500+) to EMI with flexible tenures (3-24 months). Convert within 30 days of purchase through the app or by calling customer service. Interest rates vary based on tenure and card type."
+    }
+  ]
+}
+

@@ -1,0 +1,41 @@
+{
+  "category": "Account & Onboarding",
+  "description": "Information about account setup, eligibility, and credit limits",
+  "faqs": [
+    {
+      "question": "What are the eligibility criteria for a credit card?",
+      "answer": "To be eligible for a credit card, you must be at least 18 years old, have a minimum annual income of ₹2,40,000, have a good credit score (typically 750+), and provide valid identity and address proof documents."
+    },
+    {
+      "question": "What documents are required for credit card application?",
+      "answer": "You need to provide: 1) Identity proof (Aadhaar, PAN, Passport, or Driving License), 2) Address proof (Aadhaar, Utility bill, or Bank statement), 3) Income proof (Salary slips, IT returns, or Bank statements), and 4) Recent passport-size photographs."
+    },
+    {
+      "question": "What is a credit limit?",
+      "answer": "A credit limit is the maximum amount you can spend using your credit card. It is determined based on your income, credit history, and repayment capacity. You can request a limit increase after maintaining a good payment history for 6-12 months."
+    },
+    {
+      "question": "How can I check my application status?",
+      "answer": "You can check your credit card application status by: 1) Logging into our mobile app or website, 2) Calling our customer service at 1800-XXX-XXXX, or 3) Sending an SMS with 'STATUS' to our registered number. You'll receive updates via SMS and email."
+    },
+    {
+      "question": "How long does it take to get approved?",
+      "answer": "Typically, credit card applications are processed within 3-7 business days. If all documents are submitted correctly and your credit profile meets our criteria, you'll receive instant approval in some cases. You'll be notified via SMS and email once your application is approved."
+    }
+  ],
+  "topics": [
+    {
+      "name": "Eligibility",
+      "description": "Credit card eligibility is based on age (18+), income (minimum ₹2,40,000 annually), credit score (750+), and employment status. Self-employed individuals need to provide additional income documentation."
+    },
+    {
+      "name": "Credit Limit",
+      "description": "Your credit limit is assigned based on your income, credit history, and repayment capacity. You can use up to this limit for purchases. Available credit = Credit Limit - Current Outstanding Balance."
+    },
+    {
+      "name": "Application Process",
+      "description": "The application process involves: 1) Filling the online form, 2) Document verification, 3) Credit check, 4) Approval decision, and 5) Card dispatch. You can track your application status in real-time through our app."
+    }
+  ]
+}
+
