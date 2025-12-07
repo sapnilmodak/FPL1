@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background: white;
+            border: 1px solid #ddd;
+            width: 100%;
+            max-width: 900px;
+            height: 100vh;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #000;
+            color: white;
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .header p {
+            font-size: 13px;
+            margin: 5px 0 0 0;
+            color: #ccc;
+        }
+
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #fff;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-content {
+            background: #000;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.bot .message-content {
+            background: #f5f5f5;
+            color: #000;
+            border: 1px solid #ddd;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-info {
+            font-size: 11px;
+            color: #999;
+            margin-top: 5px;
+            padding: 0 4px;
+        }
+
+        .input-container {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #ddd;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-group {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #000;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: 1px solid #000;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            color: #000;
+        }
+
+        .send-btn {
+            background: #000;
+            color: white;
+            border: 1px solid #000;
+        }
+
+        .send-btn:hover {
+            background: #333;
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #666;
+        }
+
+        .voice-btn {
+            background: white;
+            color: #000;
+            border: 1px solid #000;
+        }
+
+        .voice-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .voice-btn.recording {
+            background: #000;
+            color: white;
+        }
+
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .mode-toggle {
+            display: flex;
+            gap: 5px;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            background: #fafafa;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .mode-btn.active {
+            background: #000;
+            color: white;
+            border-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Credit Card Assistant</h1>
+            <p>Assistant for credit card queries and operations</p>
+        </div>
+
+        <div class="mode-toggle">
+            <button class="mode-btn active" onclick="setMode('text')">Text Chat</button>
+            <button class="mode-btn" onclick="setMode('voice')">Voice Chat</button>
+            <button class="mode-btn" id="authBtn" onclick="toggleAuth()">Login</button>
+        </div>
+
+        <div id="authModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+            <div style="background: white; padding: 30px; border-radius: 4px; width: 400px; max-width: 90%;">
+                <h2 style="margin: 0 0 20px 0;">Authentication</h2>
+                <div id="authForm">
+                    <input type="text" id="authUserId" placeholder="User ID" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                    <input type="password" id="authPassword" placeholder="Password" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                    <input type="email" id="authEmail" placeholder="Email (for signup)" style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; display: none;">
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="handleLogin()" style="flex: 1; padding: 10px; background: #000; color: white; border: none; border-radius: 4px; cursor: pointer;">Login</button>
+                        <button onclick="handleSignup()" style="flex: 1; padding: 10px; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer;">Signup</button>
+                        <button onclick="toggleSignup()" id="toggleSignupBtn" style="flex: 1; padding: 10px; background: #666; color: white; border: none; border-radius: 4px; cursor: pointer;">Show Signup</button>
+                    </div>
+                    <button onclick="closeAuth()" style="width: 100%; margin-top: 10px; padding: 10px; background: #ccc; color: #000; border: none; border-radius: 4px; cursor: pointer;">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="message bot">
+                <div class="message-content">
+                    Hello. How can I help you with your credit card today?
+                    <div class="message-info">You can ask about account info, transactions, bills, repayments, or perform actions like blocking your card.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <div class="input-group">
+                <input type="text" id="messageInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+                <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceRecording()">
+                    Record
+                </button>
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                    Send
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8000';
+        let currentMode = 'text';
+        let isRecording = false;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let authToken = localStorage.getItem('authToken') || null;
+        let currentUserId = localStorage.getItem('userId') || null;
+        
+        function loadVoices() {
+            if ('speechSynthesis' in window) {
+                const voices = window.speechSynthesis.getVoices();
+                if (voices.length === 0) {
+                    window.speechSynthesis.onvoiceschanged = () => {
+                        console.log('Voices loaded:', window.speechSynthesis.getVoices().length);
+                    };
+                }
+            }
+        }
+        
+        loadVoices();
+        setTimeout(loadVoices, 100);
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (mode === 'voice') {
+                document.getElementById('messageInput').placeholder = 'Click Record to start voice chat...';
+            } else {
+                document.getElementById('messageInput').placeholder = 'Type your message...';
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message && currentMode === 'text') return;
+
+            if (currentMode === 'text' && message) {
+                addMessage('user', message);
+                input.value = '';
+                
+                const sendBtn = document.getElementById('sendBtn');
+                sendBtn.disabled = true;
+                sendBtn.innerHTML = '<div class="loading"></div>';
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/chat`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: message,
+                            user_id: currentUserId || 'web_user',
+                            channel: 'web',
+                            token: authToken
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.response && data.response.includes('authorized') || data.response.includes('signup') || data.response.includes('login')) {
+                        addMessage('bot', data.response);
+                        if (!authToken) {
+                            setTimeout(() => {
+                                toggleAuth();
+                            }, 1000);
+                        }
+                    } else {
+                        let botMessage = data.response;
+                        if (data.intent) {
+                            botMessage += `\n\n[Intent: ${data.intent}]`;
+                        }
+                        if (data.action_taken) {
+                            botMessage += `\n[Action: ${data.action_taken}]`;
+                        }
+                        addMessage('bot', botMessage);
+                    }
+                } catch (error) {
+                    addMessage('bot', 'Sorry, I encountered an error. Please try again.');
+                    console.error('Error:', error);
+                } finally {
+                    sendBtn.disabled = false;
+                    sendBtn.innerHTML = 'Send';
+                }
+            }
+        }
+
+        function toggleAuth() {
+            if (authToken) {
+                handleLogout();
+            } else {
+                const modal = document.getElementById('authModal');
+                modal.style.display = 'flex';
+            }
+        }
+
+        function closeAuth() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        function toggleSignup() {
+            const emailInput = document.getElementById('authEmail');
+            const toggleBtn = document.getElementById('toggleSignupBtn');
+            if (emailInput.style.display === 'none') {
+                emailInput.style.display = 'block';
+                toggleBtn.textContent = 'Hide Signup';
+            } else {
+                emailInput.style.display = 'none';
+                toggleBtn.textContent = 'Show Signup';
+            }
+        }
+
+        async function handleLogin() {
+            const userId = document.getElementById('authUserId').value;
+            const password = document.getElementById('authPassword').value;
+
+            if (!userId || !password) {
+                alert('Please enter user ID and password');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    authToken = data.token;
+                    currentUserId = data.user_id;
+                    localStorage.setItem('authToken', authToken);
+                    localStorage.setItem('userId', currentUserId);
+                    document.getElementById('authBtn').textContent = 'Logout';
+                    closeAuth();
+                    addMessage('bot', 'Login successful. You can now use action APIs.');
+                } else {
+                    alert(data.message || 'Login failed');
+                }
+            } catch (error) {
+                alert('Login error. Please try again.');
+                console.error('Error:', error);
+            }
+        }
+
+        async function handleSignup() {
+            const userId = document.getElementById('authUserId').value;
+            const password = document.getElementById('authPassword').value;
+            const email = document.getElementById('authEmail').value;
+
+            if (!userId || !password) {
+                alert('Please enter user ID and password');
+                return;
+            }
+
+            if (!email) {
+                alert('Please enter email for signup');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        password: password,
+                        email: email
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    authToken = data.token;
+                    currentUserId = data.user_id;
+                    localStorage.setItem('authToken', authToken);
+                    localStorage.setItem('userId', currentUserId);
+                    document.getElementById('authBtn').textContent = 'Logout';
+                    closeAuth();
+                    addMessage('bot', 'Signup successful. You can now use action APIs.');
+                } else {
+                    alert(data.message || 'Signup failed');
+                }
+            } catch (error) {
+                alert('Signup error. Please try again.');
+                console.error('Error:', error);
+            }
+        }
+
+        function handleLogout() {
+            authToken = null;
+            currentUserId = null;
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('userId');
+            document.getElementById('authBtn').textContent = 'Login';
+            addMessage('bot', 'Logged out successfully.');
+        }
+
+        if (authToken) {
+            document.getElementById('authBtn').textContent = 'Logout';
+            document.getElementById('authBtn').onclick = handleLogout;
+        }
+
+        async function toggleVoiceRecording() {
+            if (!isRecording) {
+                startRecording();
+            } else {
+                stopRecording();
+            }
+        }
+
+        let speechRecognition = null;
+        
+        async function startRecording() {
+            try {
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    startBrowserSpeechRecognition();
+                } else {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = (event) => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        await processVoiceInput(audioBlob);
+                        stream.getTracks().forEach(track => track.stop());
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    document.getElementById('voiceBtn').classList.add('recording');
+                    document.getElementById('voiceBtn').innerHTML = 'Stop';
+                }
+            } catch (error) {
+                alert('Error accessing microphone. Please allow microphone access.');
+                console.error('Error:', error);
+            }
+        }
+        
+        function startBrowserSpeechRecognition() {
+            try {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                speechRecognition = new SpeechRecognition();
+                
+                speechRecognition.continuous = false;
+                speechRecognition.interimResults = false;
+                speechRecognition.lang = 'en-US';
+                
+                speechRecognition.onstart = () => {
+                    isRecording = true;
+                    document.getElementById('voiceBtn').classList.add('recording');
+                    document.getElementById('voiceBtn').innerHTML = 'Stop';
+                    addMessage('user', '[Listening...]');
+                };
+                
+                speechRecognition.onresult = async (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    addMessage('user', `"${transcript}"`);
+                    
+                    // Send to chat endpoint
+                    const sendBtn = document.getElementById('sendBtn');
+                    sendBtn.disabled = true;
+                    sendBtn.innerHTML = '<div class="loading"></div>';
+                    
+                    try {
+                        const chatResponse = await fetch(`${API_BASE_URL}/chat`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        body: JSON.stringify({
+                            message: transcript,
+                            user_id: currentUserId || 'web_user',
+                            channel: 'web',
+                            token: authToken
+                        })
+                        });
+
+                        const chatData = await chatResponse.json();
+                        addMessage('bot', chatData.response);
+                        
+                        if ('speechSynthesis' in window) {
+                            window.speechSynthesis.cancel();
+                            const utterance = new SpeechSynthesisUtterance(chatData.response);
+                            utterance.rate = 1.0;
+                            utterance.pitch = 1.0;
+                            utterance.volume = 1.0;
+                            
+                            let voices = window.speechSynthesis.getVoices();
+                            if (voices.length === 0) {
+                                window.speechSynthesis.getVoices();
+                                voices = window.speechSynthesis.getVoices();
+                            }
+                            
+                            const preferredVoice = voices.find(voice => 
+                                voice.lang.startsWith('en') && 
+                                (voice.name.includes('Natural') || voice.name.includes('Neural'))
+                            ) || voices.find(voice => voice.lang.startsWith('en')) || voices[0];
+                            
+                            if (preferredVoice) {
+                                utterance.voice = preferredVoice;
+                            }
+                            
+                            window.speechSynthesis.speak(utterance);
+                        }
+                    } catch (error) {
+                        addMessage('bot', 'Sorry, I encountered an error. Please try again.');
+                        console.error('Error:', error);
+                    } finally {
+                        sendBtn.disabled = false;
+                        sendBtn.innerHTML = 'Send';
+                    }
+                };
+                
+                speechRecognition.onerror = (event) => {
+                    console.log('Speech recognition error:', event.error);
+                    if (event.error === 'no-speech') {
+                        addMessage('bot', 'No speech detected. Please try again.');
+                    } else if (event.error === 'audio-capture') {
+                        addMessage('bot', 'Microphone not found. Please check your microphone.');
+                    } else {
+                        addMessage('bot', 'Speech recognition error. Please try typing your message.');
+                    }
+                    stopRecording();
+                };
+                
+                speechRecognition.onend = () => {
+                    stopRecording();
+                };
+                
+                speechRecognition.start();
+            } catch (error) {
+                console.error('Speech recognition not available:', error);
+                alert('Your browser does not support speech recognition. Please use Chrome or Edge browser.');
+            }
+        }
+
+        function stopRecording() {
+            if (speechRecognition && isRecording) {
+                speechRecognition.stop();
+                speechRecognition = null;
+            }
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+            }
+            isRecording = false;
+            document.getElementById('voiceBtn').classList.remove('recording');
+            document.getElementById('voiceBtn').innerHTML = 'Record';
+        }
+
+        async function processVoiceInput(audioBlob) {
+            addMessage('user', '[Voice message]');
+            
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<div class="loading"></div>';
+
+            try {
+                const transcribedText = await recognizeSpeechWithBackend(audioBlob);
+
+                if (transcribedText && transcribedText.trim().length > 0 && !transcribedText.includes("Sorry, I couldn't process")) {
+                    addMessage('user', `"${transcribedText}"`);
+                    
+                    const chatResponse = await fetch(`${API_BASE_URL}/chat`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: transcribedText,
+                            user_id: currentUserId || 'web_user',
+                            channel: 'web',
+                            token: authToken
+                        })
+                    });
+
+                    const chatData = await chatResponse.json();
+                    addMessage('bot', chatData.response);
+
+                    try {
+                        if ('speechSynthesis' in window) {
+                            window.speechSynthesis.cancel();
+                            
+                            const utterance = new SpeechSynthesisUtterance(chatData.response);
+                            utterance.rate = 1.0;
+                            utterance.pitch = 1.0;
+                            utterance.volume = 1.0;
+                            
+                            let voices = window.speechSynthesis.getVoices();
+                            if (voices.length === 0) {
+                                window.speechSynthesis.getVoices();
+                                voices = window.speechSynthesis.getVoices();
+                            }
+                            
+                            const preferredVoice = voices.find(voice => 
+                                voice.lang.startsWith('en') && 
+                                (voice.name.includes('Natural') || voice.name.includes('Neural') || voice.name.includes('Premium'))
+                            ) || voices.find(voice => voice.lang.startsWith('en')) || voices[0];
+                            
+                            if (preferredVoice) {
+                                utterance.voice = preferredVoice;
+                            }
+                            
+                            window.speechSynthesis.speak(utterance);
+                            
+                            utterance.onerror = (event) => {
+                                console.log('Speech synthesis error:', event);
+                            };
+                            
+                            utterance.onend = () => {
+                                console.log('Speech synthesis completed');
+                            };
+                        }
+                    } catch (ttsError) {
+                        console.log('TTS error:', ttsError);
+                    }
+                } else {
+                    const errorMsg = transcribedText || 'Sorry, I could not process your voice message.';
+                    addMessage('bot', errorMsg + ' You can type your message instead using the text input.');
+                }
+            } catch (error) {
+                addMessage('bot', 'Sorry, I encountered an error processing your voice message. Please try typing your message instead.');
+                console.error('Error:', error);
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = 'Send';
+            }
+        }
+        
+        async function recognizeSpeechWithBackend(audioBlob) {
+            try {
+                const formData = new FormData();
+                formData.append('audio', audioBlob, 'recording.wav');
+
+                const sttResponse = await fetch(`${API_BASE_URL}/voice/stt`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const sttData = await sttResponse.json();
+                return sttData.text || null;
+            } catch (error) {
+                console.log('Backend STT error:', error);
+                return null;
+            }
+        }
+
+        function addMessage(sender, text) {
+            const chatContainer = document.getElementById('chatContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.textContent = text;
+            
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
+
