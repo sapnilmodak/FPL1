@@ -1,3 +1,7 @@
+"""
+Intent Classification using Hugging Face LLM
+Classifies user queries into predefined intents
+"""
 
 import requests
 import json
@@ -78,3 +82,66 @@ Intent:"""
                 return intent
         
         return self._rule_based_classify(original_message)["intent"]
+    
+    def _rule_based_classify(self, message: str) -> Dict[str, Any]:
+        message_lower = message.lower()
+        
+        if any(word in message_lower for word in ["delivery", "track", "card status", "when will i receive"]):
+            return {"intent": "CHECK_DELIVERY_STATUS", "confidence": 0.9}
+        
+        if any(word in message_lower for word in ["block", "cancel", "disable", "deactivate"]):
+            return {"intent": "BLOCK_CARD", "confidence": 0.9}
+        
+        if any(word in message_lower for word in ["statement", "download", "bill", "invoice"]):
+            return {"intent": "DOWNLOAD_STATEMENT", "confidence": 0.85}
+        
+        if any(word in message_lower for word in ["emi", "installment", "convert", "pay in parts"]):
+            return {"intent": "CONVERT_TO_EMI", "confidence": 0.9}
+        
+        if any(word in message_lower for word in ["due", "overdue", "outstanding", "pending payment"]):
+            return {"intent": "CHECK_DUE_AMOUNT", "confidence": 0.9}
+        
+        if any(word in message_lower for word in ["hello", "hi", "hey", "good morning", "good afternoon"]):
+            return {"intent": "GREETING", "confidence": 0.95}
+        
+        if any(word in message_lower for word in ["account", "limit", "balance", "credit limit"]):
+            return {"intent": "ACCOUNT_INFO", "confidence": 0.8}
+        
+        if any(word in message_lower for word in ["transaction", "payment", "purchase", "failed"]):
+            return {"intent": "TRANSACTION_QUERY", "confidence": 0.8}
+        
+        return {"intent": "KNOWLEDGE_QUERY", "confidence": 0.7}
+    
+    async def generate_response(self, message: str, intent: str) -> str:
+        try:
+            prompt = f"""You are a helpful credit card assistant. Answer the following question briefly and professionally.
+
+Question: {message}
+Intent: {intent}
+
+Answer:"""
+            
+            response = requests.post(
+                "https://api-inference.huggingface.co/models/google/flan-t5-base",
+                headers=self.headers,
+                json={
+                    "inputs": prompt,
+                    "parameters": {
+                        "max_new_tokens": 150,
+                        "return_full_text": False
+                    }
+                },
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                if isinstance(result, list) and len(result) > 0:
+                    return result[0].get("generated_text", "I apologize, but I couldn't generate a response. Please try again.")
+            
+            return "I'm here to help with your credit card queries. Could you please rephrase your question?"
+        
+        except Exception as e:
+            logger.error(f"Error generating response: {str(e)}")
+            return "I apologize, but I'm experiencing technical difficulties. Please try again later."
+

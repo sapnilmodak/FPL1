@@ -15,20 +15,39 @@ class ActionAPIs:
     """Mock action APIs for credit card operations"""
     
     def __init__(self):
-        self.mock_users = {
-            "default_user": {
-                "user_id": "default_user",
-                "card_number": "****1234",
-                "card_status": "active",
-                "credit_limit": 50000,
-                "available_credit": 35000,
-                "delivery_status": "in_transit",
-                "delivery_date": "2024-01-15",
-                "overdue_amount": 0,
-                "due_date": "2024-01-25",
-                "outstanding_balance": 15000
-            }
+        self.mock_users = {}
+        self._initialize_default_user()
+    
+    def _initialize_default_user(self):
+        self.mock_users["default_user"] = {
+            "user_id": "default_user",
+            "card_number": "****1234",
+            "card_status": "active",
+            "credit_limit": 50000,
+            "available_credit": 35000,
+            "delivery_status": "in_transit",
+            "delivery_date": "2024-01-15",
+            "overdue_amount": 0,
+            "due_date": "2024-01-25",
+            "outstanding_balance": 15000
         }
+    
+    def create_user_data(self, user_id: str):
+        if user_id not in self.mock_users:
+            self.mock_users[user_id] = {
+                "user_id": user_id,
+                "card_number": f"****{random.randint(1000, 9999)}",
+                "card_status": "active",
+                "credit_limit": random.randint(30000, 100000),
+                "available_credit": random.randint(10000, 50000),
+                "delivery_status": "in_transit",
+                "delivery_date": (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d"),
+                "overdue_amount": 0,
+                "due_date": (datetime.now() + timedelta(days=20)).strftime("%Y-%m-%d"),
+                "outstanding_balance": random.randint(5000, 20000)
+            }
+            logger.info(f"Created user data for: {user_id}")
+        return self.mock_users[user_id]
     
     async def execute_action(self, intent: str, query: str, user_id: str) -> Dict[str, Any]:
         try:
@@ -59,7 +78,7 @@ class ActionAPIs:
     
     async def block_card(self, user_id: str) -> Dict[str, Any]:
         logger.info(f"BLOCK_CARD API called for user: {user_id}")
-        user = self.mock_users.get(user_id, self.mock_users["default_user"])
+        user = self.create_user_data(user_id)
         previous_status = user["card_status"]
         user["card_status"] = "blocked"
         
@@ -76,8 +95,7 @@ class ActionAPIs:
         }
     
     async def check_delivery_status(self, user_id: str) -> Dict[str, Any]:
-        """Check card delivery status"""
-        user = self.mock_users.get(user_id, self.mock_users["default_user"])
+        user = self.create_user_data(user_id)
         
         status_messages = {
             "dispatched": "Your card has been dispatched and is on its way. Expected delivery: " + user.get("delivery_date", "2024-01-15"),
@@ -99,7 +117,7 @@ class ActionAPIs:
         }
     
     async def convert_to_emi(self, user_id: str, transaction_id: str) -> Dict[str, Any]:
-        user = self.mock_users.get(user_id, self.mock_users["default_user"])
+        user = self.create_user_data(user_id)
         
         transaction_amount = random.randint(5000, 50000)
         emi_months = 6
@@ -119,8 +137,7 @@ class ActionAPIs:
         }
     
     async def get_bill(self, user_id: str, month: Optional[str] = None) -> Dict[str, Any]:
-        """Fetch credit card bill"""
-        user = self.mock_users.get(user_id, self.mock_users["default_user"])
+        user = self.create_user_data(user_id)
         
         if not month:
             month = datetime.now().strftime("%B %Y")
@@ -139,8 +156,7 @@ class ActionAPIs:
         }
     
     async def get_overdue(self, user_id: str) -> Dict[str, Any]:
-        """Check overdue amount"""
-        user = self.mock_users.get(user_id, self.mock_users["default_user"])
+        user = self.create_user_data(user_id)
         
         overdue_amount = user.get("overdue_amount", 0)
         due_date = user.get("due_date", "2024-01-25")
